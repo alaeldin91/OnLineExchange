@@ -1,0 +1,20 @@
+this is onLineExhange
+you can choose any currency to convert Any Currency
+this appliaction minum Sdk 21
+and Compiler Sdk 33
+input number to convert
+technologies
+1-java
+2- mvvm and jetpackCompose
+3-dagger hilt 
+4-Room DataBase
+5-Rx java
+6-liveCycle And live Data
+7- viewModel
+8-repository
+9-Material design
+10-SharedPrefrence
+11-Retrofit
+how to setup in android
+setup dagger hilt and mvvm
+and this all package setup on gradle
