@@ -4,6 +4,7 @@ package com.example.onlineexchangeratecalcultor.repository;
 import androidx.lifecycle.LiveData;
 
 import com.example.onlineexchangeratecalcultor.database.RateDao;
+import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.model.ResultCurrency;
 import com.example.onlineexchangeratecalcultor.network.ApiService;
@@ -28,6 +29,10 @@ public class RepositoryCurrency {
 
     public void insertRate(Rates rate) {
         rateDao.insertRate(rate);
+    }
+
+    public void insertRateKey(RateKey rateKey) {
+        rateDao.insertRatKey(rateKey);
     }
 
     public LiveData<Rates> liveDataRatesById(int id) {

@@ -31,6 +31,11 @@ public class Rates {
     @SerializedName("AOA")
     @Expose
     private double aoa;
+
+    public Rates(double usd) {
+        this.usd = usd;
+    }
+
     @SerializedName("ARS")
     @Expose
     private double ars;
@@ -40,6 +45,7 @@ public class Rates {
     @SerializedName("AWG")
     @Expose
     private double awg;
+
     public Double getUsd() {
         return usd;
     }

@@ -7,14 +7,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.onlineexchangeratecalcultor.databinding.ActivityMainBinding;
 import com.example.onlineexchangeratecalcultor.helper.SharedPref;
+import com.example.onlineexchangeratecalcultor.model.RateKey;
+import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -49,14 +55,27 @@ public class MainActivity extends AppCompatActivity {
             eventFromSpinner();
             eventToSpinner();
             eventEdtText("3.1");
-            Object[][] ratKey = new Object[listOfKeys.size()][];
-            int i = 0;
-            for (String rates : listOfKeys) {
-                ratKey[i] = new Object[ratKey.length];
-            }
-
+            insertRateKey(listOfKeys);
+            insertRate(listOfValues);
         });
 
+    }
+
+    public void insertRateKey(ArrayList<String> listOfKeys) {
+        for (int i = 0; i < listOfKeys.size(); i++) {
+            String name = listOfKeys.get(i);
+            RateKey rateKey = new RateKey(name);
+            currencyViewModel.insertRateKey(rateKey);
+        }
+    }
+
+    public void insertRate(ArrayList<Double> listOfValue) {
+        for (int i = 0; i < listOfValue.size(); i++) {
+            double rateValue = listOfValue.get(i);
+            Rates rates = new Rates(rateValue);
+            currencyViewModel.insertRate(rates);
+
+        }
     }
 
     public void updateListRateName(ArrayList<String> arrayList) {
@@ -84,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void untilizeToSpinner() {
-        Log.i("haji", listOfKeys + "");
+
         ArrayAdapter<String> adapterCurrency = new ArrayAdapter<>(
                 MainActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, listOfKeys);
@@ -102,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
                 valueFromCurrency = String.valueOf(listOfValue.get(i));
                 activityMainBinding.includeMain.edtCurrency.setText(valueFromCurrency);
                 String rateName = listOfKeys.get(i);
-                Log.i("j", rateName);
                 sharedPreferences.putString("keyFrom", rateName);
 
             }
@@ -135,9 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void eventEdtText(String valueTo) {
-        Log.i("valueTo", valueTo);
-        //   String valueTo = sharedPreferences.getString("newValue");
-        Log.i("suliman", valueTo);
+
         activityMainBinding.includeMain.edtCurrency.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -146,12 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 Log.i("i", i1 + "");
                 String valueCurrent = charSequence.toString();
                 double valueChangeDouble;
                 double valueCurrentDouble;
-
 
                 try {
                     valueChangeDouble = Double.parseDouble(valueTo);

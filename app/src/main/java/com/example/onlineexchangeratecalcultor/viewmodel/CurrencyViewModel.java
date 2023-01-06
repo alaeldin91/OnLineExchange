@@ -5,6 +5,8 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.repository.RepositoryCurrency;
 import java.util.HashMap;
@@ -55,7 +57,9 @@ public class CurrencyViewModel extends ViewModel {
     public void insertRate(Rates rates) {
         repositoryCurrency.insertRate(rates);
     }
-
+   public void insertRateKey(RateKey rateKey){
+        repositoryCurrency.insertRateKey(rateKey);
+   }
     public void getLocalRate() {
         this.liveDataRate = repositoryCurrency.ratesLiveData();
 
