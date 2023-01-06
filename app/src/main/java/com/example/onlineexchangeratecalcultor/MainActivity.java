@@ -15,7 +15,6 @@ import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -49,8 +48,13 @@ public class MainActivity extends AppCompatActivity {
             updateListValues(listOfValues);
             eventFromSpinner();
             eventToSpinner();
-            eventEdtText();
-            Log.i("musa",stringDoubleHashMap+"");
+            eventEdtText("3.1");
+            Object[][] ratKey = new Object[listOfKeys.size()][];
+            int i = 0;
+            for (String rates : listOfKeys) {
+                ratKey[i] = new Object[ratKey.length];
+            }
+
         });
 
     }
@@ -98,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 valueFromCurrency = String.valueOf(listOfValue.get(i));
                 activityMainBinding.includeMain.edtCurrency.setText(valueFromCurrency);
                 String rateName = listOfKeys.get(i);
-                Log.i("j",rateName);
-                sharedPreferences.putString("keyFrom",rateName);
+                Log.i("j", rateName);
+                sharedPreferences.putString("keyFrom", rateName);
 
             }
 
@@ -116,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String value = String.valueOf(listOfValue.get(i));
-                sharedPreferences.putString("newValue",value);
+                sharedPreferences.putString("newValue", value);
                 activityMainBinding.includeMain.edtToCurrency.setText(value);
                 String rateName = listOfKeys.get(i);
-                sharedPreferences.putString("keyTo",rateName);
+                sharedPreferences.putString("keyTo", rateName);
 
             }
 
@@ -130,43 +134,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void eventEdtText() {
-        String valueTo = sharedPreferences.getString("newValue");
+    public void eventEdtText(String valueTo) {
+        Log.i("valueTo", valueTo);
+        //   String valueTo = sharedPreferences.getString("newValue");
+        Log.i("suliman", valueTo);
         activityMainBinding.includeMain.edtCurrency.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                Log.i("i", i1 + "");
+                String valueCurrent = charSequence.toString();
+                double valueChangeDouble;
+                double valueCurrentDouble;
+
+
+                try {
+                    valueChangeDouble = Double.parseDouble(valueTo);
+                    valueCurrentDouble = Double.parseDouble(valueCurrent);
+                    Log.i("value", valueTo + " " + valueCurrentDouble);
+                } catch (NumberFormatException e) {
+                    valueChangeDouble = 0;
+                    valueCurrentDouble = 0;
                 }
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                    Log.i("i", i1 + "");
-                    String valueChange = charSequence.toString();
-                    String valueCurrent = charSequence.toString();
-                    double valueChangeDouble;
-                    double valueCurrentDouble;
+                double result = valueChangeDouble * valueCurrentDouble;
+                String resultStr = String.valueOf(result);
+                activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
+            }
 
 
-                        try {
-                            valueChangeDouble = Double.parseDouble(valueChange);
-                            valueCurrentDouble = Double.parseDouble(valueCurrent);
-                        } catch (NumberFormatException e) {
-                            valueChangeDouble = 0;
-                            valueCurrentDouble = 0;
-                        }
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-                        double result = valueChangeDouble * valueCurrentDouble;
-                        String resultStr = String.valueOf(result);
-                        activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
-                    }
-
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-
-                }
-            });
-        }
+            }
+        });
+    }
 
 }
