@@ -8,7 +8,7 @@ import com.example.onlineexchangeratecalcultor.model.Rates;
 @Dao
 public interface RateDao {
 @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertRate(Rates Rate);
+    void insertRate(Rates rates);
     @Query("SELECT * FROM Rate")
       LiveData<Rates> getAllRate();
 

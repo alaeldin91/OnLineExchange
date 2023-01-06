@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             eventFromSpinner();
             eventToSpinner();
             eventEdtText();
+            Log.i("musa",stringDoubleHashMap+"");
         });
 
     }
@@ -142,21 +143,23 @@ public class MainActivity extends AppCompatActivity {
 
                     Log.i("i", i1 + "");
                     String valueChange = charSequence.toString();
-                    String valueCurrent = valueTo;
+                    String valueCurrent = charSequence.toString();
                     double valueChangeDouble;
                     double valueCurrentDouble;
-                    try {
-                        valueChangeDouble = Double.parseDouble(valueChange);
-                        valueCurrentDouble = Double.parseDouble(valueCurrent);
-                    } catch (NumberFormatException e) {
-                        valueChangeDouble = 0;
-                        valueCurrentDouble = 0;
-                    }
 
-                    double result = valueChangeDouble * valueCurrentDouble;
-                    String resultStr = String.valueOf(result);
-                    activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
-                }
+
+                        try {
+                            valueChangeDouble = Double.parseDouble(valueChange);
+                            valueCurrentDouble = Double.parseDouble(valueCurrent);
+                        } catch (NumberFormatException e) {
+                            valueChangeDouble = 0;
+                            valueCurrentDouble = 0;
+                        }
+
+                        double result = valueChangeDouble * valueCurrentDouble;
+                        String resultStr = String.valueOf(result);
+                        activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
+                    }
 
 
                 @Override
