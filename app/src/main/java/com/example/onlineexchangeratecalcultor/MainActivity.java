@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {
 
             }
+
         });
     }
 
@@ -221,7 +222,6 @@ public class MainActivity extends AppCompatActivity {
     public void observerLiveDataValue() {
         currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
             ArrayList<Double> arrayList = new ArrayList<>();
-
             @Override
             public void onChanged(Rates rates) {
                 arrayList.add(rates.getUsd());
