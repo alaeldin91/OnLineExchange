@@ -10,17 +10,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.onlineexchangeratecalcultor.databinding.ActivityMainBinding;
 import com.example.onlineexchangeratecalcultor.helper.SharedPref;
 import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -206,11 +210,10 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < rateKeys.size(); i++) {
                 RateKey objRate = rateKeys.get(i);
                 arrayList.add(objRate.getName());
-                Log.i("arr", arrayList + "");
                 updateListRateName(arrayList);
                 updateListRateName2(arrayList);
-                   eventEdtText();
-                   eventFromSpinner();
+                eventEdtText();
+                eventFromSpinner();
             }
         });
     }
