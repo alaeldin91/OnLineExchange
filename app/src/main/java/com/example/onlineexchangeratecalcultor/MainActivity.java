@@ -23,6 +23,7 @@ import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 == NetworkInfo.State.CONNECTED ||
                 connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()
                         == NetworkInfo.State.CONNECTED);
+        eventFromSpinner();
+        eventToSpinner();
+        eventEdtText();
         if (connected) {
             currencyViewModel.observerCurrency();
             ObserverRateCurrency();
@@ -74,12 +78,8 @@ public class MainActivity extends AppCompatActivity {
             updateListRateName(listOfKeys);
             updateListRateName2(listOfKeys);
             updateListValues(listOfValues);
-            eventFromSpinner();
-            eventToSpinner();
-            eventEdtText();
             insertRateKey(listOfKeys);
             insertRate(listOfValues);
-
         });
 
     }
@@ -93,12 +93,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertRate(ArrayList<Double> listOfValue) {
-        for (int i = 0; i < listOfValue.size(); i++) {
-            double rateValue = listOfValue.get(i);
-            Rates rates = new Rates(rateValue);
-            Log.i("insertValue", rateValue + "");
-            currencyViewModel.insertRate(rates);
-        }
+        Rates rates = new Rates(listOfValue.get(0), listOfValue.get(1), listOfValue.get(2),
+                listOfValue.get(3), listOfValue.get(4),
+                listOfValue.get(5), listOfValue.get(6), listOfValue.get(7),
+                listOfValue.get(8), listOfValue.get(9));
+                currencyViewModel.insertRate(rates);
     }
 
     public void updateListRateName(ArrayList<String> arrayList) {
@@ -213,28 +212,31 @@ public class MainActivity extends AppCompatActivity {
                 arrayList.add(objRate.getName());
                 updateListRateName(arrayList);
                 updateListRateName2(arrayList);
-                eventEdtText();
-                eventFromSpinner();
+                Log.i("rateName",arrayList+"");
             }
         });
     }
 
     public void observerLiveDataValue() {
-        currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
-            ArrayList<Double> arrayList = new ArrayList<>();
+        currencyViewModel.getLiveDataRate().observe(this, new Observer<List<Rates>>() {
+            ArrayList<Double> arrayListDouble = new ArrayList<>();
             @Override
-            public void onChanged(Rates rates) {
-                arrayList.add(rates.getUsd());
-                arrayList.add(rates.getAud());
-                arrayList.add(rates.getAwg());
-                arrayList.add(rates.getArs());
-                arrayList.add(rates.getAoa());
-                arrayList.add(rates.getAed());
-                arrayList.add(rates.getAng());
-                arrayList.add(rates.getAfn());
-                arrayList.add(rates.getAll());
-                arrayList.add(rates.getAmd());
-                updateListValues(arrayList);
+            public void onChanged(List<Rates> rates) {
+                ArrayList<Rates> arrayListRate = (ArrayList) rates;
+                for (int i = 0; i < arrayListRate.size(); i++) {
+                    arrayListDouble.add(arrayListRate.get(i).getUsd());
+                    arrayListDouble.add(arrayListRate.get(i).getAed());
+                    arrayListDouble.add(arrayListRate.get(i).getAfn());
+                    arrayListDouble.add(arrayListRate.get(i).getAll());
+                    arrayListDouble.add(arrayListRate.get(i).getArs());
+                    arrayListDouble.add(arrayListRate.get(i).getAmd());
+                    arrayListDouble.add(arrayListRate.get(i).getAng());
+                    arrayListDouble.add(arrayListRate.get(i).getAoa());
+                    arrayListDouble.add(arrayListRate.get(i).getAwg());
+                    arrayListDouble.add(arrayListRate.get(i).getAud());
+                    Log.i("arr", arrayListDouble + "");
+                    updateListValues(arrayListDouble);
+                }
             }
         });
     }

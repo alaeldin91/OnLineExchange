@@ -18,7 +18,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class CurrencyViewModel extends ViewModel {
     private final MutableLiveData<HashMap<String, Double>> ratesMutableLiveData = new MutableLiveData<>();
     private final RepositoryCurrency repositoryCurrency;
-    private LiveData<Rates> liveDataRate;
+    private LiveData<List<Rates>> liveDataRate;
     private LiveData<List<RateKey>>liveDataKey;
 
     @Inject
@@ -70,7 +70,7 @@ public class CurrencyViewModel extends ViewModel {
     public LiveData<List<RateKey>>getLiveDataRateKey() {
         return liveDataKey;
     }
-    public LiveData<Rates> getLiveDataRate() {
+    public LiveData<List<Rates>> getLiveDataRate() {
         return liveDataRate;
     }
 

@@ -6,8 +6,11 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.HashMap;
+
 @Entity(tableName = "rate")
 public class Rates {
+
     @PrimaryKey(autoGenerate = true)
     int id;
     @SerializedName("USD")
@@ -32,10 +35,6 @@ public class Rates {
     @Expose
     private double aoa;
 
-    public Rates(double usd) {
-        this.usd = usd;
-    }
-
     @SerializedName("ARS")
     @Expose
     private double ars;
@@ -45,6 +44,19 @@ public class Rates {
     @SerializedName("AWG")
     @Expose
     private double awg;
+
+    public Rates(double usd, double aed, double afn, double all, double amd, double ang, double aoa, double ars, double aud, double awg) {
+        this.usd = usd;
+        this.aed = aed;
+        this.afn = afn;
+        this.all = all;
+        this.amd = amd;
+        this.ang = ang;
+        this.aoa = aoa;
+        this.ars = ars;
+        this.aud = aud;
+        this.awg = awg;
+    }
 
     public Double getUsd() {
         return usd;

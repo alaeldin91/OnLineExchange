@@ -17,7 +17,7 @@ public interface RateDao {
     void insertRate(Rates rates);
 
     @Query("SELECT * FROM rate")
-    LiveData<Rates> getAllRate();
+    LiveData<List<Rates>> getAllRate();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertRatKey(RateKey rateKey);

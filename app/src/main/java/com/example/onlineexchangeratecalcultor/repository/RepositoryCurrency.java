@@ -34,7 +34,7 @@ public class RepositoryCurrency {
     public void insertRateKey(RateKey rateKey) {
         rateDao.insertRatKey(rateKey);
     }
-    public LiveData<Rates> ratesLiveData() {
+    public LiveData<List<Rates>> ratesLiveData() {
         return rateDao.getAllRate();
     }
     public LiveData<List<RateKey>> rateKeyLiveData(){
