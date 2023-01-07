@@ -3,6 +3,8 @@ package com.example.onlineexchangeratecalcultor.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+
 @Entity(tableName = "rateKey")
 public class RateKey {
     @PrimaryKey(autoGenerate = true)

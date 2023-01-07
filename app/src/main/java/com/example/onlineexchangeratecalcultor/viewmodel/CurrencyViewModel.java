@@ -5,11 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
 import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.repository.RepositoryCurrency;
 import java.util.HashMap;
+import java.util.List;
 import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -19,11 +19,13 @@ public class CurrencyViewModel extends ViewModel {
     private final MutableLiveData<HashMap<String, Double>> ratesMutableLiveData = new MutableLiveData<>();
     private final RepositoryCurrency repositoryCurrency;
     private LiveData<Rates> liveDataRate;
+    private LiveData<List<RateKey>>liveDataKey;
 
     @Inject
     public CurrencyViewModel(RepositoryCurrency repositoryCurrency) {
         this.repositoryCurrency = repositoryCurrency;
         this.liveDataRate = repositoryCurrency.ratesLiveData();
+        this.liveDataKey = repositoryCurrency.rateKeyLiveData();
     }
 
     public MutableLiveData<HashMap<String, Double>> getRatesMutableLiveData() {
@@ -50,9 +52,6 @@ public class CurrencyViewModel extends ViewModel {
                 error -> Log.i("error", error.getMessage()));
     }
 
-    public LiveData<Rates> getLiveDataRate() {
-        return liveDataRate;
-    }
 
     public void insertRate(Rates rates) {
         repositoryCurrency.insertRate(rates);
@@ -62,13 +61,17 @@ public class CurrencyViewModel extends ViewModel {
    }
     public void getLocalRate() {
         this.liveDataRate = repositoryCurrency.ratesLiveData();
-
     }
 
-    public void getLocalRateById(int id) {
-        this.liveDataRate = repositoryCurrency.liveDataRatesById(id);
+    public void getLocalRateKey() {
+        this.liveDataKey= repositoryCurrency.rateKeyLiveData();
     }
-    public LiveData<Rates>getLiveDataRateById() {
+
+    public LiveData<List<RateKey>>getLiveDataRateKey() {
+        return liveDataKey;
+    }
+    public LiveData<Rates> getLiveDataRate() {
         return liveDataRate;
     }
+
 }

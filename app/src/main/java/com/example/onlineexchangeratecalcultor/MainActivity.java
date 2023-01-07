@@ -1,5 +1,8 @@
 package com.example.onlineexchangeratecalcultor;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.onlineexchangeratecalcultor.databinding.ActivityMainBinding;
@@ -19,6 +23,7 @@ import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -39,8 +44,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(activityMainBinding.getRoot());
         currencyViewModel = new ViewModelProvider(MainActivity.this).get(CurrencyViewModel.class);
         sharedPreferences = new SharedPref(getApplicationContext());
-        currencyViewModel.observerCurrency();
-        ObserverRateCurrency();
+        connectInternet();
+
+    }
+
+    public void connectInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState()
+                == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState()
+                        == NetworkInfo.State.CONNECTED);
+        if (connected) {
+            currencyViewModel.observerCurrency();
+            ObserverRateCurrency();
+        } else {
+            currencyViewModel.getLocalRateKey();
+            currencyViewModel.getLocalRate();
+            observerLiveDataRateKey();
+            observerLiveDataValue();
+        }
     }
 
     public void ObserverRateCurrency() {
@@ -57,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             eventEdtText("3.1");
             insertRateKey(listOfKeys);
             insertRate(listOfValues);
+
         });
 
     }
@@ -73,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < listOfValue.size(); i++) {
             double rateValue = listOfValue.get(i);
             Rates rates = new Rates(rateValue);
+            Log.i("insertValue",rateValue+"");
             currencyViewModel.insertRate(rates);
 
         }
@@ -120,9 +144,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 valueFromCurrency = String.valueOf(listOfValue.get(i));
                 activityMainBinding.includeMain.edtCurrency.setText(valueFromCurrency);
-                String rateName = listOfKeys.get(i);
-                sharedPreferences.putString("keyFrom", rateName);
-
             }
 
             @Override
@@ -181,7 +202,6 @@ public class MainActivity extends AppCompatActivity {
                 activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
             }
 
-
             @Override
             public void afterTextChanged(Editable editable) {
 
@@ -189,4 +209,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void observerLiveDataRateKey() {
+        currencyViewModel.getLiveDataRateKey().observe(this, rateKeys -> {
+            ArrayList<String> arrayList = new ArrayList<>();
+            for (int i = 0; i < rateKeys.size(); i++) {
+                RateKey objRate = rateKeys.get(i);
+                arrayList.add(objRate.getName());
+                Log.i("arr", arrayList + "");
+                updateListRateName(arrayList);
+                updateListRateName2(arrayList);
+              //  eventEdtText("3.1");
+                //eventFromSpinner();
+            }
+        });
+    }
+
+    public void observerLiveDataValue() {
+       currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
+           @Override
+           public void onChanged(Rates rates) {
+               Log.i("alau",rates.getAud()+"");
+           }
+       });
+    }
 }
