@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     String valueFromCurrency;
     private CurrencyViewModel currencyViewModel;
     private SharedPref sharedPreferences;
+    private String value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             updateListValues(listOfValues);
             eventFromSpinner();
             eventToSpinner();
-            eventEdtText("3.1");
+            eventEdtText();
             insertRateKey(listOfKeys);
             insertRate(listOfValues);
 
@@ -98,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
             Rates rates = new Rates(rateValue);
             Log.i("insertValue",rateValue+"");
             currencyViewModel.insertRate(rates);
-
         }
     }
 
@@ -158,45 +158,39 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding.includeMain.spinnerToCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String value = String.valueOf(listOfValue.get(i));
+                 value = String.valueOf(listOfValue.get(i));
                 sharedPreferences.putString("newValue", value);
                 activityMainBinding.includeMain.edtToCurrency.setText(value);
                 String rateName = listOfKeys.get(i);
                 sharedPreferences.putString("keyTo", rateName);
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
+
         });
     }
 
-    public void eventEdtText(String valueTo) {
-
+    public void eventEdtText() {
         activityMainBinding.includeMain.edtCurrency.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.i("i", i1 + "");
                 String valueCurrent = charSequence.toString();
+                if (value == null){
+                    value ="2.1";
+                }
                 double valueChangeDouble;
                 double valueCurrentDouble;
-
                 try {
-                    valueChangeDouble = Double.parseDouble(valueTo);
+                    valueChangeDouble = Double.parseDouble(value);
                     valueCurrentDouble = Double.parseDouble(valueCurrent);
-                    Log.i("value", valueTo + " " + valueCurrentDouble);
                 } catch (NumberFormatException e) {
                     valueChangeDouble = 0;
                     valueCurrentDouble = 0;
-                }
-
+               }
                 double result = valueChangeDouble * valueCurrentDouble;
                 String resultStr = String.valueOf(result);
                 activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
@@ -218,17 +212,27 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("arr", arrayList + "");
                 updateListRateName(arrayList);
                 updateListRateName2(arrayList);
-              //  eventEdtText("3.1");
-                //eventFromSpinner();
+                eventEdtText();
+                eventFromSpinner();
             }
         });
     }
 
     public void observerLiveDataValue() {
        currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
+           ArrayList<Double>  arrayList= new ArrayList<>();
            @Override
            public void onChanged(Rates rates) {
-               Log.i("alau",rates.getAud()+"");
+               arrayList.add(rates.getUsd());
+               arrayList.add(rates.getAud());
+               arrayList.add(rates.getAwg());
+               arrayList.add(rates.getArs());
+               arrayList.add(rates.getAoa());
+               arrayList.add(rates.getAed());
+               arrayList.add(rates.getAng());
+               arrayList.add(rates.getAfn());
+               arrayList.add(rates.getAll());
+               arrayList.add(rates.getAmd());
            }
        });
     }
