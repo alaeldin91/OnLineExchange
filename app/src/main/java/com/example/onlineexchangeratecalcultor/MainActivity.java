@@ -10,11 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.onlineexchangeratecalcultor.databinding.ActivityMainBinding;
 import com.example.onlineexchangeratecalcultor.helper.SharedPref;
 import com.example.onlineexchangeratecalcultor.model.RateKey;
@@ -94,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < listOfValue.size(); i++) {
             double rateValue = listOfValue.get(i);
             Rates rates = new Rates(rateValue);
-            Log.i("insertValue",rateValue+"");
+            Log.i("insertValue", rateValue + "");
             currencyViewModel.insertRate(rates);
         }
     }
@@ -155,12 +153,13 @@ public class MainActivity extends AppCompatActivity {
         activityMainBinding.includeMain.spinnerToCurrency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                 value = String.valueOf(listOfValue.get(i));
+                value = String.valueOf(listOfValue.get(i));
                 sharedPreferences.putString("newValue", value);
                 activityMainBinding.includeMain.edtToCurrency.setText(value);
                 String rateName = listOfKeys.get(i);
                 sharedPreferences.putString("keyTo", rateName);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -173,11 +172,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
+
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String valueCurrent = charSequence.toString();
-                if (value == null){
-                    value ="2.1";
+                if (value == null) {
+                    value = "2.1";
                 }
                 double valueChangeDouble;
                 double valueCurrentDouble;
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (NumberFormatException e) {
                     valueChangeDouble = 0;
                     valueCurrentDouble = 0;
-               }
+                }
                 double result = valueChangeDouble * valueCurrentDouble;
                 String resultStr = String.valueOf(result);
                 activityMainBinding.includeMain.edtToCurrency.setText(resultStr);
@@ -209,28 +209,30 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("arr", arrayList + "");
                 updateListRateName(arrayList);
                 updateListRateName2(arrayList);
-                eventEdtText();
-                eventFromSpinner();
+                   eventEdtText();
+                   eventFromSpinner();
             }
         });
     }
 
     public void observerLiveDataValue() {
-       currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
-           ArrayList<Double>  arrayList= new ArrayList<>();
-           @Override
-           public void onChanged(Rates rates) {
-               arrayList.add(rates.getUsd());
-               arrayList.add(rates.getAud());
-               arrayList.add(rates.getAwg());
-               arrayList.add(rates.getArs());
-               arrayList.add(rates.getAoa());
-               arrayList.add(rates.getAed());
-               arrayList.add(rates.getAng());
-               arrayList.add(rates.getAfn());
-               arrayList.add(rates.getAll());
-               arrayList.add(rates.getAmd());
-           }
-       });
+        currencyViewModel.getLiveDataRate().observe(this, new Observer<Rates>() {
+            ArrayList<Double> arrayList = new ArrayList<>();
+
+            @Override
+            public void onChanged(Rates rates) {
+                arrayList.add(rates.getUsd());
+                arrayList.add(rates.getAud());
+                arrayList.add(rates.getAwg());
+                arrayList.add(rates.getArs());
+                arrayList.add(rates.getAoa());
+                arrayList.add(rates.getAed());
+                arrayList.add(rates.getAng());
+                arrayList.add(rates.getAfn());
+                arrayList.add(rates.getAll());
+                arrayList.add(rates.getAmd());
+                updateListValues(arrayList);
+            }
+        });
     }
 }
