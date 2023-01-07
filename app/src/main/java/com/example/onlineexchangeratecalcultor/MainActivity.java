@@ -10,17 +10,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.example.onlineexchangeratecalcultor.databinding.ActivityMainBinding;
 import com.example.onlineexchangeratecalcultor.helper.SharedPref;
 import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -70,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ObserverRateCurrency() {
+
         currencyViewModel.getRatesMutableLiveData().observe(MainActivity.this, stringDoubleHashMap -> {
             Set<String> keySet = stringDoubleHashMap.keySet();
             ArrayList<String> listOfKeys = new ArrayList<>(keySet);
@@ -85,11 +83,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void insertRateKey(ArrayList<String> listOfKeys) {
-        for (int i = 0; i < listOfKeys.size(); i++) {
-            String name = listOfKeys.get(i);
-            RateKey rateKey = new RateKey(name);
-            currencyViewModel.insertRateKey(rateKey);
-        }
+        RateKey rateKey = new RateKey(listOfKeys.get(0), listOfKeys.get(1), listOfKeys.get(2),
+                listOfKeys.get(3), listOfKeys.get(4),
+                listOfKeys.get(5), listOfKeys.get(6), listOfKeys.get(7),
+                listOfKeys.get(8), listOfKeys.get(9));
+        currencyViewModel.insertRateKey(rateKey);
+
     }
 
     public void insertRate(ArrayList<Double> listOfValue) {
@@ -97,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 listOfValue.get(3), listOfValue.get(4),
                 listOfValue.get(5), listOfValue.get(6), listOfValue.get(7),
                 listOfValue.get(8), listOfValue.get(9));
-                currencyViewModel.insertRate(rates);
+        currencyViewModel.insertRate(rates);
     }
 
     public void updateListRateName(ArrayList<String> arrayList) {
@@ -207,19 +206,30 @@ public class MainActivity extends AppCompatActivity {
     public void observerLiveDataRateKey() {
         currencyViewModel.getLiveDataRateKey().observe(this, rateKeys -> {
             ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<RateKey> arrayListRate = (ArrayList) rateKeys;
             for (int i = 0; i < rateKeys.size(); i++) {
-                RateKey objRate = rateKeys.get(i);
-                arrayList.add(objRate.getName());
-                updateListRateName(arrayList);
-                updateListRateName2(arrayList);
-                Log.i("rateName",arrayList+"");
+                arrayList.add(arrayListRate.get(i).getUsd());
+                arrayList.add(arrayListRate.get(i).getAed());
+                arrayList.add(arrayListRate.get(i).getAfn());
+                arrayList.add(arrayListRate.get(i).getAll());
+                arrayList.add(arrayListRate.get(i).getArs());
+                arrayList.add(arrayListRate.get(i).getAmd());
+                arrayList.add(arrayListRate.get(i).getAng());
+                arrayList.add(arrayListRate.get(i).getAoa());
+                arrayList.add(arrayListRate.get(i).getAwg());
+                arrayList.add(arrayListRate.get(i).getAud());
+
             }
+            updateListRateName(arrayList);
+            updateListRateName2(arrayList);
+            Log.i("rateName", arrayList + "");
         });
     }
 
     public void observerLiveDataValue() {
         currencyViewModel.getLiveDataRate().observe(this, new Observer<List<Rates>>() {
             ArrayList<Double> arrayListDouble = new ArrayList<>();
+
             @Override
             public void onChanged(List<Rates> rates) {
                 ArrayList<Rates> arrayListRate = (ArrayList) rates;
@@ -234,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
                     arrayListDouble.add(arrayListRate.get(i).getAoa());
                     arrayListDouble.add(arrayListRate.get(i).getAwg());
                     arrayListDouble.add(arrayListRate.get(i).getAud());
-                    Log.i("arr", arrayListDouble + "");
-                    updateListValues(arrayListDouble);
                 }
+                updateListValues(arrayListDouble);
+                Log.i("arr", arrayListDouble + "");
             }
         });
     }
