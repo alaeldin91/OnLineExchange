@@ -20,12 +20,9 @@ import com.example.onlineexchangeratecalcultor.helper.SharedPref;
 import com.example.onlineexchangeratecalcultor.model.RateKey;
 import com.example.onlineexchangeratecalcultor.model.Rates;
 import com.example.onlineexchangeratecalcultor.viewmodel.CurrencyViewModel;
-
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
