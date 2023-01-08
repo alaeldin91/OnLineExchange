@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -218,7 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 arrayList.add(arrayListRate.get(i).getAoa());
                 arrayList.add(arrayListRate.get(i).getAwg());
                 arrayList.add(arrayListRate.get(i).getAud());
-
             }
             updateListRateName(arrayList);
             updateListRateName2(arrayList);
